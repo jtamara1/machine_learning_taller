@@ -47,7 +47,7 @@ weather.RainToday = weather.RainToday.replace(['No', 'Yes'],[0, 1])
 weather.RainTomorrow = weather.RainTomorrow.replace(['No', 'Yes'],[0, 1])
 weather.dropna(axis=0,how='any', inplace=True)
 
-def metricas(modelo, nombre, df_metricas, dataset):
+def metricas(modelo, nombre, dataset):
     print("*"*50)
     print(f"MODELO {nombre}")
     kfold = KFold(n_splits=10)
@@ -79,7 +79,7 @@ def metricas(modelo, nombre, df_metricas, dataset):
     print("Punto 4")
     print(actual)
     #Punto 5
-    heatmap = sns.heatmap(confusion_dt)
+    heatmap = sns.heatmap(matriz_confusion)
     fig = heatmap.get_figure()
     print(heatmap)
     fig.savefig(f"heatmap_{nombre}_{dataset}.png")
@@ -97,3 +97,22 @@ knn = KNeighborsClassifier()
 arbol = DecisionTreeClassifier()
 ada = AdaBoostClassifier()
 probabilistico = GaussianNB()
+
+data_train = bank[:36168]
+data_test = bank[36168:]
+
+x = np.array(data_train.drop(['y'], 1))
+y = np.array(data_train.y)
+
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
+
+x_test_out = np.array(data_test.drop(['y'], 1))
+y_test_out = np.array(data_test.y)
+
+print("Dataset bank")
+
+metricas(arbol, "Arbol de decisión", "bank")
+metricas(ada, "Adaboost","bank")
+metricas(random, "Random Forest", "bank")
+metricas(probabilistico, "Gaussian Naive Bayes", "bank")
+metricas(knn, "KNN", "bank")
