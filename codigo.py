@@ -46,3 +46,48 @@ weather.WindDir3pm = weather.WindDir3pm.replace(['SW', 'SSE', 'NNW', 'WSW', 'WNW
 weather.RainToday = weather.RainToday.replace(['No', 'Yes'],[0, 1])
 weather.RainTomorrow = weather.RainTomorrow.replace(['No', 'Yes'],[0, 1])
 weather.dropna(axis=0,how='any', inplace=True)
+
+def metricas(modelo, nombre, df_metricas, dataset):
+    print("*"*50)
+    print(f"MODELO {nombre}")
+    kfold = KFold(n_splits=10)
+    cvscores = [] 
+    for train, test in kfold.split(x_train, y_train):
+        modelo.fit(x_train[train], y_train[train])
+        scores = modelo.score(x_train[test], y_train[test])
+        cvscores.append(scores)
+    y_pred = modelo.predict(x_test)
+    accuracy_entrenamiento = accuracy_score(modelo.predict(x_train), y_train)
+    accuracy_validation = np.mean(cvscores)
+    accuracy_test = accuracy_score(y_pred, y_test)
+    matriz_confusion = confusion_matrix(y_test, y_pred)
+    F1 = f1_score(y_test, y_pred)
+    precision = precision_score(y_test, y_pred)
+    recall = recall_score(y_test, y_pred)
+    actual = pd.DataFrame({"modelo":[nombre],
+                           "accuracy_validacion":[accuracy_validation],
+                           "accuracy_test":[accuracy_test],
+                           "accuracy_entrenamiento":[accuracy_entrenamiento],
+                           "recall":[recall],
+                           "precision":[precision],
+                           "F1":[F1]})
+    
+    #Punto 3
+    print("Punto 3")
+    print(classification_report(y_test, y_pred))
+    #Punto 4
+    print("Punto 4")
+    print(actual)
+    #Punto 5
+    heatmap = sns.heatmap(confusion_dt)
+    fig = heatmap.get_figure()
+    print(heatmap)
+    fig.savefig(f"heatmap_{nombre}_{dataset}.png")
+    plt.clf()
+    #Punto 6
+    print("Punto 6")
+    print("Y test")
+    print(y_test)
+    print("Y pred")
+    print(y_pred)
+    return accuracy_validation, accuracy_test, y_pred, accuracy_entrenamiento, matriz_confusion
