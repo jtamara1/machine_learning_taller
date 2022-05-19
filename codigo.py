@@ -74,10 +74,13 @@ def metricas(modelo, nombre, dataset):
     
     #Punto 3
     print("Punto 3")
-    print(classification_report(y_test, y_pred))
+    print(actual)
     #Punto 4
     print("Punto 4")
-    print(actual)
+    print("Y test")
+    print(y_test)
+    print("Y pred")
+    print(y_pred) 
     #Punto 5
     heatmap = sns.heatmap(matriz_confusion)
     fig = heatmap.get_figure()
@@ -86,10 +89,7 @@ def metricas(modelo, nombre, dataset):
     plt.clf()
     #Punto 6
     print("Punto 6")
-    print("Y test")
-    print(y_test)
-    print("Y pred")
-    print(y_pred)
+    print(classification_report(y_test, y_pred))   
     return accuracy_validation, accuracy_test, y_pred, accuracy_entrenamiento, matriz_confusion
 
 random = RandomForestClassifier()
