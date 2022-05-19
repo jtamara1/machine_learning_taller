@@ -116,3 +116,28 @@ metricas(ada, "Adaboost","bank")
 metricas(random, "Random Forest", "bank")
 metricas(probabilistico, "Gaussian Naive Bayes", "bank")
 metricas(knn, "KNN", "bank")
+
+random = RandomForestClassifier()
+knn = KNeighborsClassifier()
+arbol = DecisionTreeClassifier()
+ada = AdaBoostClassifier()
+probabilistico = GaussianNB()
+
+data_train = weather[:45136]
+data_test = weather[45136:]
+
+x = np.array(data_train.drop(['RainTomorrow'], 1))
+y = np.array(data_train.RainTomorrow)
+
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
+
+x_test_out = np.array(data_test.drop(['RainTomorrow'], 1))
+y_test_out = np.array(data_test.RainTomorrow)
+
+print("Dataset bank")
+
+metricas(arbol, "Arbol de decisión", "weather")
+metricas(ada, "Adaboost", "weather")
+metricas(random, "Random Forest", "weather")
+metricas(probabilistico, "Gaussian Naive Bayes", "weather")
+metricas(knn, "KNN", "weather")
