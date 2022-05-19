@@ -91,3 +91,9 @@ def metricas(modelo, nombre, df_metricas, dataset):
     print("Y pred")
     print(y_pred)
     return accuracy_validation, accuracy_test, y_pred, accuracy_entrenamiento, matriz_confusion
+
+random = RandomForestClassifier()
+knn = KNeighborsClassifier()
+arbol = DecisionTreeClassifier()
+ada = AdaBoostClassifier()
+probabilistico = GaussianNB()
